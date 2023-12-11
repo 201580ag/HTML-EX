@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시간 및 날짜 표시</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    #time, #date {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    #toggleButton {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="time"></div>
+  <div id="date"></div>
+  <button id="toggleButton" onclick="toggleTheme()">테마 변경</button>
+
+  <script>
+    var isDarkTheme = false;
+
+    function toggleTheme() {
+      isDarkTheme = !isDarkTheme;
+      updateTheme();
+    }
+
+    function updateTheme() {
+      var body = document.body;
+      var timeElement = document.getElementById('time');
+      var dateElement = document.getElementById('date');
+
+      if (isDarkTheme) {
+        body.style.backgroundColor = 'black';
+        body.style.color = 'yellow';
+        timeElement.style.color = 'yellow';
+        dateElement.style.color = 'yellow';
+      } else {
+        body.style.backgroundColor = 'white';
+        body.style.color = 'black';
+        timeElement.style.color = 'black';
+        dateElement.style.color = 'black';
+      }
+    }
+
+    function updateTime() {
+      var now = new Date();
+
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+
+      var ampm = hours >= 12 ? '오후' : '오전';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+
+      var timeString = `${ampm} ${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      document.getElementById('time').textContent = timeString;
+
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1;
+      var day = now.getDate();
+      var dayOfWeek = getDayOfWeek(now.getDay());
+
+      var dateString = `${year}년 ${month < 10 ? '0' : ''}${month}월 ${day < 10 ? '0' : ''}${day}일 ${dayOfWeek}`;
+      document.getElementById('date').textContent = dateString;
+    }
+
+    function getDayOfWeek(dayIndex) {
+      const daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+      return daysOfWeek[dayIndex];
+    }
+
+    // 초기 호출
+    updateTime();
+
+    // 0.5초마다 갱신
+    setInterval(updateTime, 500);
+
+    // 초기 테마 설정
+    updateTheme();
+  </script>
+</body>
+</html>
