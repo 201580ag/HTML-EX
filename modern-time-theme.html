@@ -40,7 +40,8 @@
   <button id="toggleButton" onclick="toggleTheme()">테마 변경</button>
 
   <script>
-    var isDarkTheme = false;
+    // 사용자 기기 테마 감지 및 초기 테마 설정
+    var isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     function toggleTheme() {
       isDarkTheme = !isDarkTheme;
