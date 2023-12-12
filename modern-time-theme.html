@@ -14,6 +14,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       transition: background-color 0.5s, color 0.5s;
+      position: relative;
     }
 
     #time, #date {
@@ -21,26 +22,40 @@
       margin-bottom: 10px;
     }
 
-    #toggleButton {
+    #userAgentInfo {
+      font-size: 0.8em;
+      position: absolute;
+      bottom: 10px;
+      color: #777;
+    }
+
+    #toggleButton, #developerButton {
       position: absolute;
       top: 10px;
-      right: 10px;
       padding: 10px;
       cursor: pointer;
-      background-color: #007BFF;
-      color: white;
       border: none;
       border-radius: 5px;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    #toggleButton {
+      right: 95px;
+    }
+
+    #developerButton {
+      right: 10px;
     }
   </style>
 </head>
 <body>
   <div id="time"></div>
   <div id="date"></div>
-  <button id="toggleButton" onclick="toggleTheme()">테마 변경</button>
+  <div id="userAgentInfo"></div>
+  <button id="toggleButton" onclick="toggleTheme()">Theme</button>
+  <button id="developerButton" onclick="openGitHub()">Developer</button>
 
   <script>
-    // 사용자 기기 테마 감지 및 초기 테마 설정
     var isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     function toggleTheme() {
@@ -52,17 +67,30 @@
       var body = document.body;
       var timeElement = document.getElementById('time');
       var dateElement = document.getElementById('date');
+      var userAgentInfoElement = document.getElementById('userAgentInfo');
+      var toggleButton = document.getElementById('toggleButton');
+      var developerButton = document.getElementById('developerButton');
 
       if (isDarkTheme) {
         body.style.backgroundColor = 'black';
         body.style.color = 'yellow';
         timeElement.style.color = 'yellow';
         dateElement.style.color = 'yellow';
+        userAgentInfoElement.style.color = '#aaa';
+        toggleButton.style.backgroundColor = '#FFD700';  // 노란색 배경
+        toggleButton.style.color = 'black';  // 검은색 글자
+        developerButton.style.backgroundColor = '#FFD700';  // 노란색 배경
+        developerButton.style.color = 'black';  // 검은색 글자
       } else {
         body.style.backgroundColor = 'white';
         body.style.color = 'black';
         timeElement.style.color = 'black';
         dateElement.style.color = 'black';
+        userAgentInfoElement.style.color = '#777';
+        toggleButton.style.backgroundColor = 'black';  // 검은색 배경
+        toggleButton.style.color = 'white';  // 하얀색 글자
+        developerButton.style.backgroundColor = 'black';  // 검은색 배경
+        developerButton.style.color = 'white';  // 하얀색 글자
       }
     }
 
@@ -87,6 +115,10 @@
 
       var dateString = `${year}년 ${month < 10 ? '0' : ''}${month}월 ${day < 10 ? '0' : ''}${day}일 ${dayOfWeek}`;
       document.getElementById('date').textContent = dateString;
+
+      var userAgentInfoElement = document.getElementById('userAgentInfo');
+      var userAgent = navigator.userAgent;
+      userAgentInfoElement.textContent = `User Agent: ${userAgent}\n | Design by 201580ag`;
     }
 
     function getDayOfWeek(dayIndex) {
@@ -94,13 +126,12 @@
       return daysOfWeek[dayIndex];
     }
 
-    // 초기 호출
+    function openGitHub() {
+      window.open('https://www.github.com/201580ag');
+    }
+
     updateTime();
-
-    // 0.5초마다 갱신
     setInterval(updateTime, 500);
-
-    // 초기 테마 설정
     updateTheme();
   </script>
 </body>
